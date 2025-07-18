@@ -1,0 +1,57 @@
+class Solution {
+    public void solveSudoku(char[][] board) {
+     solve(board,0,0);
+    }
+    public boolean solve(char[][]board,int r,int c){
+        if(r==9){
+            return true;
+        }
+        int row=r;
+        int col=c+1;
+        if(c+1==9){
+           row=r+1;
+           col=0;
+        }
+        if(board[r][c]=='.'){
+            for(int n=1;n<=9;n++){
+                if(isSafe(board,r,c,n)){
+                    board[r][c]=Character.forDigit(n,10);
+                 boolean res=solve(board,row,col);
+                   if(res){
+                    return true;
+                   }else{
+                    board[r][c]='.';
+                   }
+                }
+            }
+        }else{
+           return solve(board,row,col);
+        }
+        return false;
+    }
+
+    public boolean isSafe(char[][]board,int r,int c,int n){
+        for(int i=0;i<9;i++){
+            if(board[r][i]==n+'0'){
+                return false;
+            }
+
+        }
+        for(int i=0;i<9;i++){
+            if(board[i][c]==n+'0'){
+                return false;
+            }
+
+        }
+        int row=r-r%3;
+        int col=c-c%3;
+        for(int i=row;i<row+3;i++){
+            for(int j=col;j<col+3;j++){
+                if(board[i][j]==n+'0'){
+                    return false;
+                }
+            }
+        }
+   return true;
+    }
+}
