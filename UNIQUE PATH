@@ -1,0 +1,22 @@
+class Solution {
+    public int uniquePaths(int m, int n) {
+       HashMap<String,Integer>hm=new HashMap<>();
+        return helper(m,n,hm);
+    }
+    public int helper(int m,int n,HashMap<String,Integer>hm){
+        if(m==1&&n==1){
+        return 1;
+       } 
+       if(m<1||n<1){
+        return 0;
+       }
+       String key=m+","+n;
+       if(hm.containsKey(key)){
+        return hm.get(key);
+       }
+
+       int paths= helper(m-1,n,hm)+helper(m,n-1,hm);
+       hm.put(key,paths);
+       return hm.get(key);
+    }
+}
