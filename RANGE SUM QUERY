@@ -1,0 +1,75 @@
+class NumArray {
+    int[]arr;
+    class Node{
+        int data;
+        int si;
+        int ei;
+        Node left=null;
+        Node right=null;
+         public Node(int si,int ei){
+            this.si=si;
+            this.ei=ei;
+         }
+    }
+    Node root;
+    public NumArray(int[] nums) {
+        this.arr=nums;
+        this.root=CreateSt(0,nums.length-1);
+        
+    }
+    public Node CreateSt(int si,int ei){
+        if(si==ei){
+            Node newnode=new Node(si,ei);
+            newnode.data=arr[si];
+            return newnode;
+        }
+        Node newnode=new Node(si,ei);
+        int mid=(si+ei)/2;
+        newnode.left=CreateSt(si,mid);
+        newnode.right=CreateSt(mid+1,ei);
+        newnode.data=newnode.left.data+newnode.right.data;
+        return newnode;
+    }
+    
+    public void update(int index, int val) {
+         
+    this.update(root,index,val);
+    }
+    private int update(Node root,int index,int val){
+            if(index>=root.si&&index<=root.ei){
+                if(index==root.si&&index==root.ei){
+                    root.data=val;
+                    arr[index]=val;
+                    return  root.data;
+                }else{
+                    int leftans=update(root.left,index,val);
+                    int rightans=update(root.right,index,val);
+                   return root.data=leftans+rightans;
+                }
+            }
+            return root.data;
+    }
+    
+    public int sumRange(int left, int right) {
+        return this.sumRange(root,left,right);
+    }
+    private int sumRange(Node root,int left,int right){
+        if(root.si>=left&&root.ei<=right){
+            return root.data;
+        }
+        else if(root.ei<left||root.si>right){
+            return 0;
+        }
+        else{
+            return sumRange(root.left,left,right)+sumRange(root.right,left,right);
+        }
+    }
+    //public int getSum
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.sumRange(left,right);
+ */
