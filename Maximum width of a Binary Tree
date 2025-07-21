@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int widthOfBinaryTree(TreeNode root) {
+        if(root.left==null&&root.right==null){
+            return 1;
+        }
+        Queue<Pair<TreeNode,Integer>>q=new LinkedList<>();
+        q.add(new Pair<>(root,0));
+        q.add(new Pair<>(null,-1));
+        ArrayList<Pair<TreeNode,Integer>>ar=new ArrayList<>();
+        int maxwidth=0;
+        while(!q.isEmpty()){
+            Pair<TreeNode,Integer>curr=q.remove();
+            TreeNode node=curr.getKey();
+            int idx=curr.getValue();
+            if(!q.isEmpty()){
+            if(node==null){
+               int width=ar.get(ar.size()-1).getValue()-ar.get(0).getValue()+1;
+               maxwidth=Math.max(maxwidth,width);
+               ar.clear();
+                q.add(new Pair<>(null,-1));
+            }else{
+                if(curr.getKey().left!=null){
+                    q.add(new Pair<>(curr.getKey().left,2*curr.getValue()+1));
+                    ar.add(new Pair<>(curr.getKey().left,2*curr.getValue()+1));
+                }
+                if(curr.getKey().right!=null){
+                    q.add(new Pair<>(curr.getKey().right,2*curr.getValue()+2));
+                    ar.add(new Pair<>(curr.getKey().right,2*curr.getValue()+2));
+                }
+            }
+        }
+        }
+        return maxwidth;
+    }
+}
